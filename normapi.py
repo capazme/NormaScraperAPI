@@ -8,10 +8,6 @@ def norma_scraper(body):
     comma = body.get('comma', 'text')
     article = body.get('article')
     extension = body.get('extension')
-    if "-" in article and not extension:
-        article.split("-")
-        extension=article[1]
-        article=article
     version = body.get('version')
     version_date = body.get('version_date')
     timeout = body.get('timeout', 10)

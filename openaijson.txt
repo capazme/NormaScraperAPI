@@ -1,0 +1,116 @@
+OpenAi schema should look like this:
+
+# Since the execution environment doesn't support the direct use of external libraries like PyYAML,
+# I'll manually convert the JSON to YAML format using a simplified approach that mimics the YAML structure.
+
+json_spec = {
+  "openapi": "3.1.0",
+  "info": {
+    "title": "NormaScraper API",
+    "description": "API per estrarre dati legislativi da normascraper.com.",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://02a4-151-31-106-103.ngrok-free.app"
+    }
+  ],
+  "paths": {
+    "/extract-data": {
+      "post": {
+        "description": "Estrae dati legislativi basati sui parametri forniti.",
+        "operationId": "extractLegislativeData",
+        "requestBody": {
+          "description": "Parametri necessari per l'estrazione dei dati legislativi",
+          "required": True,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "act_type": {
+                    "type": "string",
+                    "description": "Tipo di atto legislativo",
+                    "example": "legge"
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Data di pubblicazione dell'atto",
+                    "example": "7 agosto 1990"
+                    "nullable": True
+                  },
+                  "act_number": {
+                    "type": "string",
+                    "description": "Numero dell'atto",
+                    "example": "241"
+                    "nullable": True
+                  },
+                  "article": {
+                    "type": "string",
+                    "description": "Articolo specifico dell'atto, se applicabile",
+                    "nullable": True,
+                    "example": "1"
+                  },
+                  "extension": {
+                    "type": "string",
+                    "nullable": True
+                  },
+                  "comma": {
+                    "type": "string",
+                    "description": "Comma specifico dell'atto, se applicabile",
+                    "nullable": True,
+                    "example": "1"
+                  },
+                  "version": {
+                    "type": "string",
+                    "default": "vigente",
+                    "nullable": True
+                  },
+                  "version_date": {
+                    "type": "string",
+                    "format": "date",
+                    "nullable": True
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "default": 10
+                  }
+                },
+                "required": [
+                  "act_type",
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dati estratti con successo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "description": "Dati legislativi estratti in base ai parametri forniti."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Richiesta non valida a causa di parametri mancanti o errati."
+          },
+          "500": {
+            "description": "Errore interno del server."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

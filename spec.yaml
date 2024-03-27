@@ -20,9 +20,11 @@ paths:
                 date:
                   type: string
                   example: "7 agosto 1990"
+                  nullable: true
                 act_number:
                   type: string
                   example: "241"
+                  nullable: true
                 article:
                   type: string
                   example: "1"

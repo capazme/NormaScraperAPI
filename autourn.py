@@ -86,7 +86,7 @@ def estrai_testo_articolo(atto, num_articolo=None, est_articolo=None, comma=None
         try:
             soup = BeautifulSoup(atto, 'html.parser')
             corpo = soup.find('div', class_='bodyTesto')
-            print(corpo.text)
+            #print(corpo.text)
             if not comma:
                 return corpo.text
             else:
@@ -260,7 +260,7 @@ def generate_urn(act_type, date=None, act_number=None, article=None, extension=N
     "regolamento di esecuzione ed attuazione del Codice dei contratti pubblici": "/uri-res/N2Ls?urn:nir:stato:decreto.del.presidente.della.repubblica:2010-10-05;207",
     "codice delle pari opportunità": "/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2006-04-11;198",
     "codice dell'ordinamento militare": "/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2010-03-15;66",
-    "codice del processo amministrativo": "/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2010-07-02;104",
+    "codice del processo amministrativo": "/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2010-07-02;104:2",
     "codice del turismo": "/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2011-05-23;79",
     "codice antimafia": "/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2011-09-06;159",
     "codice di giustizia contabile": "/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2016-08-26;174",
@@ -315,11 +315,13 @@ def get_urn_and_extract_data(driver, act_type, date, act_number=None, article=No
     if urn is None:
         print("Errore nella generazione dell'URN.")
         return None
+    
     ann_num = re.search(r":(\d+)(!vig=|@originale)$", urn)
+    
     if ann_num:
         # Estrai il gruppo di interesse (i numeri, opzionalmente seguiti da !vig= o @originale)
         annex = ann_num.group(1)
-        #print(annex)  # Stampa il risultato dell'estrazione
+        #print(annex)  
     else:
         annex = None
 

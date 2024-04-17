@@ -14,38 +14,40 @@ paths:
             schema:
               type: object
               properties:
-                act_type:
+                 act_type:
                   type: string
-                  example: "legge"
-                date:
-                  type: string
-                  example: "7 agosto 1990"
-                  nullable: true
-                act_number:
-                  type: string
-                  example: "241"
-                  nullable: true
-                article:
-                  type: string
-                  example: "1"
-                  nullable: true
-                extension:
-                  type: string
-                  nullable: true
-                comma:
-                  type: string
-                  nullable: true
-                version:
-                  type: string
-                  nullable: true
-                  default: "vigente"
-                version_date:
-                  type: string
-                  format: date
-                  nullable: true
-                timeout:
-                  type: integer
-                  default: 10
+                  example: legge
+                 date:
+                   type: string
+                   example: 7 agosto 1990
+                 act_number:
+                   type: string
+                   example: "241"
+                 article:
+                   type: string
+                   example: "1"
+                   default: ""
+                   nullable: false
+                 extension:
+                   type: string
+                   default: ""
+                   nullable: false
+                 comma:
+                   type: string
+                   default: ""
+                   nullable: false
+                 version:
+                   type: string
+                   default: vigente
+                   nullable: false
+                 version_date:
+                   type: string
+                   format: date
+                   default: ""
+                   nullable: false
+                 timeout:
+                   type: integer
+                   default: 10
       responses:
         '200':
           description: Dati estratti con successo.

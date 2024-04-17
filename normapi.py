@@ -5,7 +5,7 @@ def norma_scraper(body):
     act_type = body['act_type']
     date = body['date']
     act_number = body['act_number']
-    comma = body.get('comma', 'text')
+    comma = body.get('comma')
     article = body.get('article')
     extension = body.get('extension')
     version = body.get('version')

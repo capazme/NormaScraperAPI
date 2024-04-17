@@ -355,3 +355,25 @@ def get_urn_and_extract_data(driver, act_type, date, act_number=None, article=No
        html_out = estrai_testo_articolo(atto=html, num_articolo=article, comma=comma, tipo='html')
        
        return html_out
+
+
+#act_type = "legge"
+#date = "7 agosto 1990"
+#act_number = "241"
+#comma = ""
+#article = "1"
+#extension = ""
+#version = "vigente"
+#version_date = ""
+#timeout = 10
+#
+#
+#
+#driver = create_driver() 
+#data = get_urn_and_extract_data(driver, act_type, date, act_number, article, extension, comma, version, version_date, timeout)
+#
+#if data is None:
+#    raise Exception("Errore nella generazione dell'URN o nell'esportazione dei dati.")
+#
+#content_type = 'application/xml'
+#response = data

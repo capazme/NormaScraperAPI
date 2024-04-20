@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: Legislation Extraction API
+  description: API per estrarre dati legislativi basandosi su specifici parametri. La funzione get_urn_and_extract_data è utilizzata per interrogare il sito Normattiva, identificando atti legislativi tramite URN per poi estrarre dati rilevanti come testo dell'atto, date di promulgazione e modifiche successive.
+  version: "1.0"
+servers:
+  - url: https://c92d-151-31-113-44.ngrok-free.app
+paths:
+  /extract-data:
+    post:
+      summary: Estrae testo legislativo basato su parametri definiti.
+      operationId: extractLegislation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                act_type:
+                  type: string
+                  description: "Tipo di atto legislativo da identificare. Include opzioni generiche (legge, decreto legge, decreto legislativo) e atti specifici quali Costituzione, Codici Civile e Penale, e molti altri."
+                  example: "legge"
+                  default: "costituzione"
+                date:
+                  type: string
+                  format: date
+                  description: "Data di pubblicazione dell'atto, specificata in formato YYYY-MM-DD o solo l'anno YYYY, opzionale."
+                  example: "1990"
+                  default: ""
+                  nullable: false
+                act_number:
+                  type: string
+                  description: "Numero dell'atto legislativo e eventuali estensioni (es. '-bis', '-ter'), opzionale."
+                  example: "241"
+                  default: ""
+                  nullable: false
+                article:
+                  type: string
+                  description: "Elenco degli articoli da estrarre, separati da virgole, con possibili estensioni come '-bis' o '-ter'."
+                  example: "1,2,21-octies"
+                  default: ""
+                  nullable: false
+                comma:
+                  type: string
+                  description: "Specifica il comma dell'articolo, se necessario."
+                  default: ""
+                  nullable: false
+                version:
+                  type: string
+                  description: "Indica se l'atto è nella versione 'originale' o 'vigente'."
+                  example: "vigente"
+                  default: "vigente"
+                  nullable: false
+                version_date:
+                  type: string
+                  format: date
+                  description: "Data della versione dell'atto in formato YYYY-MM-DD, opzionale."
+                  default: ""
+                  nullable: false
+                timeout:
+                  type: integer
+                  description: "Tempo massimo in secondi per la risposta del server."
+                  default: 10
+              required:
+                - act_type
+
+      responses:
+        '200':
+          description: "Testo legislativo estratto con successo."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        article:
+                          type: string
+                        text:
+                          type: string
+                example:
+                  success: true
+                  data: [
+                    { article: "1", text: "Testo dell'articolo 1..." },
+                    { article: "2", text: "Testo dell'articolo 2..." }
+                  ]
+        '400':
+          description: "Richiesta non valida, ad esempio per parametri mancanti o malformattati."
+        '500':
+          description: "Errore interno del server."
+components:
+  schemas: {}

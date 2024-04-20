@@ -1,10 +1,10 @@
-from autourn import get_urn_and_extract_data, create_driver
+from sys_op import get_urn_and_extract_data
 from flask import jsonify, make_response
 
 def norma_scraper(body):
-    act_type = body['act_type']
-    date = body['date']
-    act_number = body['act_number']
+    act_type = body.get('act_type')
+    date = body.get('date')
+    act_number = body.get('act_number')
     comma = body.get('comma')
     article = body.get('article')
     extension = body.get('extension')
@@ -14,9 +14,8 @@ def norma_scraper(body):
     
     
     try:
-        driver = create_driver() 
-        data = get_urn_and_extract_data(driver, act_type, date, act_number, article, extension, comma, version, version_date, timeout)
-        
+        data, url, estremi = get_urn_and_extract_data(act_type, date, act_number, article, extension, comma, version, version_date, timeout)
+        print(estremi,url)
         if data is None:
             raise Exception("Errore nella generazione dell'URN o nell'esportazione dei dati.")
         

@@ -228,6 +228,56 @@ def contiene_sequenza(text):
     # Restituisce True se trova il pattern, altrimenti False
     return match is not None
 
+def get_tree(normurn):
+    # Sending HTTP GET request to the provided URL
+    response = requests.get(normurn)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the HTML content of the page
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Find the div with id 'albero'
+        tree = soup.find('div', id='albero')
+        
+        # Check if the div exists
+        if tree:
+            # Find the first ul within the div
+            ul = tree.find('ul')
+            if ul:
+                # Extract all li elements within this ul
+                list_items = ul.find_all('li')
+                
+                result = []
+                li_without_class_count = 0  # Counter for li elements without any class
+                
+                for li in list_items:
+                    # Extract text and format it properly
+                    text_content = li.get_text(separator="\n", strip=True)
+                    
+                    # Check for specific class and handle accordingly
+                    if 'condiv singolo_risultato_collapse' in li.get('class', []):
+                        # Extract divs and append their texts, separated by newlines
+                        inner_divs = li.find_all('div')
+                        div_texts = [div.get_text(separator="\n", strip=True) for div in inner_divs]
+                        # Aggregate all content for this li with inner div texts
+                        full_content = "\n".join([text_content] + div_texts)
+                        result.append(full_content)
+                    else:
+                        result.append(text_content)
+                        # Increment the counter if this li has no class
+                        if not li.get('class'):
+                            li_without_class_count += 1
+                
+                # Join each element (converted to string) with a newline for clear separation and return the count
+                return '\n'.join(result), li_without_class_count
+            else:
+                return "No 'ul' element found within the 'albero' div", 0
+        else:
+            return "Div with id 'albero' not found", 0
+    else:
+        return f"Failed to retrieve the page, status code: {response.status_code}", 0
+
 
 def get_urn_and_extract_data(act_type, date=None, act_number=None, article=None, extension=None, comma=None, version=None, version_date=None, timeout=10, save_xml_path=None):
     
@@ -283,4 +333,3 @@ def get_urn_and_extract_data(act_type, date=None, act_number=None, article=None,
                 print(f"Errore nell'esportazione HTML: {e}")
         return result, None
     
-  
